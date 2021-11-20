@@ -1,135 +1,89 @@
 
 
-final int WALL = 0;
-final int CORRIDOR = 1;
-final int PACMAN = 2;
-
-final int ASCII_0 = 48;
-final int ASCII_1 = 49;
-final int ASCII_2 = 50;
-
 final int INTERSPACE = 20;
 final int WALL_SIZE = 20;
 final int CORRIDOR_SIZE = 20;
-final int PACMAN_SIZE = 20;
-final int MOVEMENT_VELOCITY = PACMAN_SIZE;
+
+final int PIXEL_SIZE = 3;
+
 
 int MAX_COLS = 13;
 int MAX_ROWS = 10;
 
-int pacmanX = 0;
-int pacmanY = 0;
+int CRATURES_SIZE = 5;
 
-int[][] grid = new int[MAX_ROWS][MAX_COLS];
+MapFile mapFile;
+TileGrid tileGrid;
+Creature[] creatures;
+Pacman pacman;
+Blinky blinky;
+Pinky pinky;
+Inky inky;
+Clyde clyde;
 
 void setup() {
-  size(480, 480);
+  //size(224 * PIXEL_SIZE, 288 * PIXEL_SIZE);
+  size(672, 864);
 
-  for (int i = 0; i < MAX_ROWS; i++) {
-    for (int j = 0; j < MAX_COLS; j++) {
-      grid[i][j] = 0;
-    }
-  }
-
-  //showMapFile();
-  fillGrid();
-  //showGrid();
+  mapFile = new MapFile();
+  
+  mapFile.showYourSelf();
+  tileGrid = mapFile.fillGrid();
+  tileGrid.renderGrid();
+  
+  creatures = new Creature[CRATURES_SIZE];
+  creatures[0] = pacman;
+  creatures[1] = blinky;
+  creatures[2] = pinky;
+  creatures[3] = inky;
+  creatures[4] = clyde;
 }
 
 void draw() {
-  drawGrid();
+  tileGrid.refreshGrid();
 }
-
-
-
-void fillGrid() {
-  String[] lines = loadStrings("map_1.txt");
-  for (int i = 0 ; i < lines.length && i < MAX_ROWS; i++) {
-    for (int j = 0 ; j < lines[i].length() && j < MAX_COLS; j++) {
-      if (lines[i].charAt(j) == ASCII_0) {
-        grid[i][j] = WALL;
-      } else if (lines[i].charAt(j) == ASCII_1) {
-        grid[i][j] = CORRIDOR;
-      } else if (lines[i].charAt(j) == ASCII_2) {
-        grid[i][j] = PACMAN;
-        pacmanX = i;        
-        pacmanY = j;
-      }
-    }
-  }
-}
-
-void drawGrid() {
-  for (int i = 0; i < MAX_ROWS; i++) {
-    for (int j = 0; j < MAX_COLS; j++) {
-      if (grid[i][j] == WALL) {
-        drawWallCell(j, i);
-      } else if (grid[i][j] == CORRIDOR) {
-        drawCorridorCell(j, i);
-      } else if (grid[i][j] == PACMAN) {
-        drawPacman(j, i);
-      }
-    }
-  }
-}
-
-void showMapFile() {
-  println("File content:");
-  String[] lines = loadStrings("map_1.txt");
-  println("there are " + lines.length + " lines");
-  for (int i = 0 ; i < lines.length && i < MAX_ROWS; i++) {
-    for (int j = 0 ; j < lines[i].length() && j < MAX_COLS; j++) {
-      print(lines[i].charAt(j));
-    }
-    println("");
-  }
-}
-
-void showGrid() {
-  println("Grid content:");
-  for (int i = 0; i < MAX_ROWS; i++) {
-    for (int j = 0; j < MAX_COLS; j++) {
-      print(grid[i][j]);
-    }
-    println("");
-  }
-}
-
 
 void keyPressed() {
   if (key == CODED) {
-    if (keyCode == LEFT && grid[pacmanX][pacmanY-1] == CORRIDOR) {
-      grid[pacmanX][pacmanY] = CORRIDOR;
-      grid[pacmanX][--pacmanY] = PACMAN;
-    } else if (keyCode == RIGHT && grid[pacmanX][pacmanY+1] == CORRIDOR) {
-      grid[pacmanX][pacmanY] = CORRIDOR;
-      grid[pacmanX][++pacmanY] = PACMAN;
-    } else if (keyCode == UP && grid[pacmanX-1][pacmanY] == CORRIDOR) {
-      grid[pacmanX][pacmanY] = CORRIDOR;
-      grid[--pacmanX][pacmanY] = PACMAN;
-    } else if (keyCode == DOWN && grid[pacmanX+1][pacmanY] == CORRIDOR) {
-      grid[pacmanX][pacmanY] = CORRIDOR;
-      grid[++pacmanX][pacmanY] = PACMAN;
+    if (isValidMovement()) {
+      for (int i = 0; i < CRATURES_SIZE; i++) {
+        tileGrid.setCorridorInCreaturePosition(creatures[i]);
+      }
+
+      if (keyCode == LEFT && tileGrid.isNotWallOnCreatureLeft(pacman)) {
+        pacman.moveLeft();
+      } else if (keyCode == RIGHT && tileGrid.isNotWallOnCreatureRight(pacman)) {
+        pacman.moveRight();
+      } else if (keyCode == UP && tileGrid.isNotWallOnCreatureUp(pacman)) {
+        pacman.moveUp();
+      } else if (keyCode == DOWN && tileGrid.isNotWallOnCreatureDown(pacman)) {
+        pacman.moveDown();
+      }
+      
+      for (int i = 0; i < CRATURES_SIZE; i++) {
+        tileGrid.refreshCreature(creatures[i]);
+      }
     }
   } else if (key == 'd') {
-    showGrid();
+    tileGrid.showYourSelf();
+    for (int i = 0; i < CRATURES_SIZE; i++) {
+      creatures[i].showYourSelf();
+    }
   }
 }
 
-
-void drawWallCell(int x, int y) {
-  fill(255);
-  //ellipse(x*(width/MAX_ROWS), y*(height/MAX_COLS), 3, 3);
-  //ellipse(x * INTERSPACE, y * INTERSPACE, 5, 5);
-  square(x * INTERSPACE, y * INTERSPACE, WALL_SIZE);
+boolean isValidMovement() {
+   return key == CODED && (keyCode == LEFT || keyCode == RIGHT || keyCode == UP || keyCode == DOWN);
 }
 
-void drawCorridorCell(int x, int y) {
-  fill(0);
-  square(x * INTERSPACE, y * INTERSPACE, CORRIDOR_SIZE);
-}
-
-void drawPacman(int x, int y) {
-  fill(255);
-  circle((x * INTERSPACE) + (PACMAN_SIZE / 2), (y * INTERSPACE) + (PACMAN_SIZE / 2), PACMAN_SIZE);
-}
+  void drawWallCell(int x, int y) {
+    fill(255);
+    //ellipse(x*(width/MAX_ROWS), y*(height/MAX_COLS), 3, 3);
+    //ellipse(x * INTERSPACE, y * INTERSPACE, 5, 5);
+    square(x * INTERSPACE, y * INTERSPACE, WALL_SIZE);
+  }
+  
+  void drawCorridorCell(int x, int y) {
+    fill(0);
+    square(x * INTERSPACE, y * INTERSPACE, CORRIDOR_SIZE);
+  }
