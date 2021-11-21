@@ -29,8 +29,4 @@ class Drawable {
   void drawYourSelf() {
     fill(c);
   }
-  
-  void showYourSelf() {
-    println(name + " - Current X,Y: " + x + "," + y);
-  }
 } 

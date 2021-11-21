@@ -10,7 +10,11 @@ final int PIXEL_SIZE = 3;
 int MAX_COLS = 13;
 int MAX_ROWS = 10;
 
-int CRATURES_SIZE = 5;
+int CREATURES_SIZE = 5;
+
+int DELAY = 5;
+
+int delayCounter;
 
 MapFile mapFile;
 TileGrid tileGrid;
@@ -25,13 +29,15 @@ void setup() {
   //size(224 * PIXEL_SIZE, 288 * PIXEL_SIZE);
   size(672, 864);
 
+  delayCounter = 0;
+
   mapFile = new MapFile();
   
-  mapFile.showYourSelf();
+  mapFile.debug();
   tileGrid = mapFile.fillGrid();
   tileGrid.renderGrid();
   
-  creatures = new Creature[CRATURES_SIZE];
+  creatures = new Creature[CREATURES_SIZE];
   creatures[0] = pacman;
   creatures[1] = blinky;
   creatures[2] = pinky;
@@ -40,34 +46,31 @@ void setup() {
 }
 
 void draw() {
-  tileGrid.refreshGrid();
+
+  if (delayCounter == 0) {
+    // i = 1 excludes to Pacman
+    for (int i = 1; i < CREATURES_SIZE; i++) {
+      tileGrid.processMovement(creatures[i]);
+    }
+  }
+
+  delayCounter++;
+  if (delayCounter > DELAY) {
+    delayCounter = 0;
+  }
+
+  tileGrid.refreshGrid();  
 }
 
 void keyPressed() {
   if (key == CODED) {
     if (isValidMovement()) {
-      for (int i = 0; i < CRATURES_SIZE; i++) {
-        tileGrid.setCorridorInCreaturePosition(creatures[i]);
-      }
-
-      if (keyCode == LEFT && tileGrid.isNotWallOnCreatureLeft(pacman)) {
-        pacman.moveLeft();
-      } else if (keyCode == RIGHT && tileGrid.isNotWallOnCreatureRight(pacman)) {
-        pacman.moveRight();
-      } else if (keyCode == UP && tileGrid.isNotWallOnCreatureUp(pacman)) {
-        pacman.moveUp();
-      } else if (keyCode == DOWN && tileGrid.isNotWallOnCreatureDown(pacman)) {
-        pacman.moveDown();
-      }
-      
-      for (int i = 0; i < CRATURES_SIZE; i++) {
-        tileGrid.refreshCreature(creatures[i]);
-      }
+      tileGrid.processMovement(creatures[0]);
     }
   } else if (key == 'd') {
-    tileGrid.showYourSelf();
-    for (int i = 0; i < CRATURES_SIZE; i++) {
-      creatures[i].showYourSelf();
+    tileGrid.debug();
+    for (int i = 0; i < CREATURES_SIZE; i++) {
+      creatures[i].debug();
     }
   }
 }
@@ -76,14 +79,14 @@ boolean isValidMovement() {
    return key == CODED && (keyCode == LEFT || keyCode == RIGHT || keyCode == UP || keyCode == DOWN);
 }
 
-  void drawWallCell(int x, int y) {
-    fill(255);
-    //ellipse(x*(width/MAX_ROWS), y*(height/MAX_COLS), 3, 3);
-    //ellipse(x * INTERSPACE, y * INTERSPACE, 5, 5);
-    square(x * INTERSPACE, y * INTERSPACE, WALL_SIZE);
-  }
-  
-  void drawCorridorCell(int x, int y) {
-    fill(0);
-    square(x * INTERSPACE, y * INTERSPACE, CORRIDOR_SIZE);
-  }
+void drawWallCell(int x, int y) {
+  fill(255);
+  //ellipse(x*(width/MAX_ROWS), y*(height/MAX_COLS), 3, 3);
+  //ellipse(x * INTERSPACE, y * INTERSPACE, 5, 5);
+  square(x * INTERSPACE, y * INTERSPACE, WALL_SIZE);
+}
+
+void drawCorridorCell(int x, int y) {
+  fill(0);
+  square(x * INTERSPACE, y * INTERSPACE, CORRIDOR_SIZE);
+}

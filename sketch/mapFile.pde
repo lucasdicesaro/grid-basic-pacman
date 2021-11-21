@@ -19,7 +19,7 @@ class MapFile {
     return tileGrid;
   }
   
-  void showYourSelf() {
+  void debug() {
     println("File content:");
     println("there are " + lines.length + " lines");
     for (int y = 0 ; y < lines.length && y < MAX_ROWS; y++) {

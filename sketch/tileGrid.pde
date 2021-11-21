@@ -48,7 +48,7 @@ class TileGrid {
       }
     }
     
-    for (int i = 0; i < CRATURES_SIZE; i++) {
+    for (int i = 0; i < CREATURES_SIZE; i++) {
       creatures[i].drawYourSelf();
     }
   }
@@ -101,6 +101,12 @@ class TileGrid {
     return !isWall(creature.getX(), creature.getY()+1);
   }
   
+  void processMovement(Creature creature) {
+    setCorridorInCreaturePosition(creature);      
+    creature.processMovement(this);                 
+    refreshCreature(creature);
+  }
+  
   void setCorridorInCreaturePosition(Creature creature) {
     setTileValue(creature.getX(), creature.getY(), CORRIDOR);
   }
@@ -109,7 +115,7 @@ class TileGrid {
     setTileValue(creature.getX(), creature.getY(), creature.getType());
   } 
   
-  void showYourSelf() {
+  void debug() {
     println("Grid content:");
     for (int y = 0; y < MAX_ROWS; y++) {
       for (int x = 0; x < MAX_COLS; x++) {

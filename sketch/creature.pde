@@ -43,6 +43,8 @@ class Creature extends Drawable {
     return previousY;
   }
   
+  void processMovement(TileGrid tileGrid) {
+  }
 
   void drawYourSelf() {
     super.drawYourSelf();
@@ -53,7 +55,7 @@ class Creature extends Drawable {
     drawCorridorCell(previousX, previousY);
   }
   
-  void showYourSelf() {
+  void debug() {
     println(name + " - Previous X,Y: " + previousX + "," + previousY + " Current X,Y: " + x + "," + y);
   }
 } 
