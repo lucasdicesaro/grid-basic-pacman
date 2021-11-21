@@ -42,8 +42,8 @@ class TileGrid {
         if (tileGrid.isWall(x, y)) {
           //drawWallCell(x, y); Walls don't change
         } else if (tileGrid.isCorridor(x, y)) {
-          drawCorridorCell(x, y); // Cleans previous position from creatures.
-          // There is a bug if I use cleanPreviousPosition(), and Pacman moves in diagonal.
+          drawCorridorCell(x, y); // Cleans all corridors. Is not the best but ...
+          // there is a bug if I use a previous coordinates, and Pacman moves in diagonal.
         }
       }
     }
@@ -99,16 +99,6 @@ class TileGrid {
   
   boolean isNotWallOnCreatureDown(Creature creature) {
     return !isWall(creature.getX(), creature.getY()+1);
-  }
-  
-  void processMovement(Creature creature) {
-    setCorridorInCreaturePosition(creature);      
-    creature.processMovement(this);                 
-    refreshCreature(creature);
-  }
-  
-  void setCorridorInCreaturePosition(Creature creature) {
-    setTileValue(creature.getX(), creature.getY(), CORRIDOR);
   }
  
   void refreshCreature(Creature creature) {

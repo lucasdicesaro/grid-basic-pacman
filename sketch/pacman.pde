@@ -3,8 +3,10 @@ final int PACMAN_TYPE = 2;
 
 class Pacman extends Creature { 
 
+  int selectedMovement;
   Pacman (int x, int y) {
-    super(x, y, PACMAN_TYPE, "Pacman", color(255, 204, 0)); 
+    super(x, y, PACMAN_TYPE, "Pacman", color(255, 204, 0));
+    selectedMovement = LEFT;
   }
   
   void drawYourSelf() {
@@ -14,18 +16,22 @@ class Pacman extends Creature {
   }
   
   void processMovement(TileGrid tileGrid) {
+    if (selectedMovement == LEFT && tileGrid.isNotWallOnCreatureLeft(this)) {
+      moveLeft();
+    } else if (selectedMovement == RIGHT && tileGrid.isNotWallOnCreatureRight(this)) {
+      moveRight();
+    } else if (selectedMovement == UP && tileGrid.isNotWallOnCreatureUp(this)) {
+      moveUp();
+    } else if (selectedMovement == DOWN && tileGrid.isNotWallOnCreatureDown(this)) {
+      moveDown();
+    }
+  }
+
+  void setSelectedMovement(int movement) {
     if (key == CODED) {
       if (isValidMovement()) {
-        if (keyCode == LEFT && tileGrid.isNotWallOnCreatureLeft(this)) {
-          moveLeft();
-        } else if (keyCode == RIGHT && tileGrid.isNotWallOnCreatureRight(this)) {
-          moveRight();
-        } else if (keyCode == UP && tileGrid.isNotWallOnCreatureUp(this)) {
-          moveUp();
-        } else if (keyCode == DOWN && tileGrid.isNotWallOnCreatureDown(this)) {
-          moveDown();
-        }
-      }   
+        selectedMovement = movement;
+      }
     }
   }
 } 

@@ -48,12 +48,10 @@ void setup() {
 void draw() {
 
   if (delayCounter == 0) {
-    // i = 1 excludes to Pacman
-    for (int i = 1; i < CREATURES_SIZE; i++) {
-      tileGrid.processMovement(creatures[i]);
+    for (int i = 0; i < CREATURES_SIZE; i++) {
+      creatures[i].processMovement(tileGrid);
     }
   }
-
   delayCounter++;
   if (delayCounter > DELAY) {
     delayCounter = 0;
@@ -64,9 +62,7 @@ void draw() {
 
 void keyPressed() {
   if (key == CODED) {
-    if (isValidMovement()) {
-      tileGrid.processMovement(creatures[0]);
-    }
+     pacman.setSelectedMovement(keyCode);
   } else if (key == 'd') {
     tileGrid.debug();
     for (int i = 0; i < CREATURES_SIZE; i++) {
