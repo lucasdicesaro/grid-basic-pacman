@@ -3,7 +3,6 @@ final int PACMAN_TYPE = 2;
 
 class Pacman extends Creature { 
 
-  int selectedMovement;
   Pacman (int x, int y) {
     super(x, y, PACMAN_TYPE, "Pacman", color(255, 204, 0));
     selectedMovement = LEFT;

@@ -1,6 +1,7 @@
 
 class Creature extends Drawable { 
   
+  int selectedMovement;
   int previousX;
   int previousY;
   
@@ -41,6 +42,10 @@ class Creature extends Drawable {
 
   int getPreviousY() {
     return previousY;
+  }
+
+  int getSelectedMovement() {
+    return selectedMovement;
   }
   
   void processMovement(TileGrid tileGrid) {

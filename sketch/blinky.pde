@@ -4,4 +4,9 @@ class Blinky extends Ghost {
   Blinky (int x, int y) {  
     super(x, y, BLINKY_TYPE, "Blinky", color(255, 0, 0)); 
   }
+
+  void setTarget() {
+    targetX = creatures[0].getX();
+    targetY = creatures[0].getY();
+  }
 } 
