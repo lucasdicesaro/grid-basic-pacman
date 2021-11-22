@@ -8,7 +8,7 @@ final int PIXEL_SIZE = 3;
 
 
 int MAX_COLS = 28;
-int MAX_ROWS = 35;
+int MAX_ROWS = 36;
 
 int CREATURES_SIZE = 5;
 
