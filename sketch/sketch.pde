@@ -7,8 +7,8 @@ final int CORRIDOR_SIZE = 20;
 final int PIXEL_SIZE = 3;
 
 
-int MAX_COLS = 13;
-int MAX_ROWS = 10;
+int MAX_COLS = 28;
+int MAX_ROWS = 35;
 
 int CREATURES_SIZE = 5;
 
@@ -69,10 +69,6 @@ void keyPressed() {
       creatures[i].debug();
     }
   }
-}
-
-boolean isValidMovement() {
-   return key == CODED && (keyCode == LEFT || keyCode == RIGHT || keyCode == UP || keyCode == DOWN);
 }
 
 void drawWallCell(int x, int y) {

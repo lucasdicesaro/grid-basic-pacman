@@ -28,10 +28,21 @@ class Pacman extends Creature {
   }
 
   void setSelectedMovement(int movement) {
-    if (key == CODED) {
-      if (isValidMovement()) {
-        selectedMovement = movement;
-      }
+    if (isValidMovement()) {
+      selectedMovement = movement;
     }
+  }
+
+  boolean isValidMovement() {
+    return isValidMovementKey() &&
+    (keyCode == LEFT && tileGrid.isNotWallOnCreatureLeft(this) ||
+     keyCode == RIGHT && tileGrid.isNotWallOnCreatureRight(this) ||
+     keyCode == UP && tileGrid.isNotWallOnCreatureUp(this) ||
+     keyCode == DOWN && tileGrid.isNotWallOnCreatureDown(this)
+    );
+  }
+
+  boolean isValidMovementKey() {
+     return key == CODED && (keyCode == LEFT || keyCode == RIGHT || keyCode == UP || keyCode == DOWN);
   }
 } 
