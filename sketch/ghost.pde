@@ -14,6 +14,12 @@ class Ghost extends Creature {
     super.drawYourSelf();
     fill(c);
     square(x * INTERSPACE, y * INTERSPACE, GHOST_SIZE);
+    //drawTarget();
+  }
+
+  void drawTarget() {
+    fill(c, 127);
+    square(targetX * INTERSPACE, targetY * INTERSPACE, GHOST_SIZE);
   }
   
   void processMovement(TileGrid tileGrid) {

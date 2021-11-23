@@ -6,23 +6,41 @@ class Inky extends Ghost {
   }
 
   void setTarget() {
-    targetX = creatures[0].getX();
-    targetY = creatures[0].getY();
+    int pacmanX = creatures[0].getX();
+    int pacmanY = creatures[0].getY();
     switch(creatures[0].getSelectedMovement()){
       case UP:
-        targetY = creatures[0].getY() - 2;
-        targetX = creatures[0].getX() - 2; // Intentional bug
+        pacmanY = creatures[0].getY() - 2;
+        pacmanX = creatures[0].getX() - 2; // Intentional bug
       break;
       case LEFT:
-        targetX = creatures[0].getX() - 2;
+        pacmanX = creatures[0].getX() - 2;
         break;
       case DOWN:
-        targetY = creatures[0].getY() + 2;
+        pacmanY = creatures[0].getY() + 2;
         break;
       case RIGHT:
-        targetX = creatures[0].getX() + 2;
+        pacmanX = creatures[0].getX() + 2;
         break;
     }
-    // TODO: Calculate vector from Blinky to resultant (targetX, targetY), and double that result. That will be Inky´s target
+
+    // Double of distance between Blinky and projected pacman (pacman + 2).
+    int distX = abs(pacmanX - creatures[1].getX()) * 2;
+    int distY = abs(pacmanY - creatures[1].getY()) * 2;
+    if (pacmanX < creatures[1].getX()) {
+      // Pacman is on the LEFT of Blinky
+      targetX = creatures[1].getX() - distX;
+    } else if (pacmanX > creatures[1].getX()) {
+      // Pacman is on the RIGHT of Blinky
+      targetX = creatures[1].getX() + distX;
+    }
+
+    if (pacmanY < creatures[1].getY()) {
+      // Pacman is on top (UP) of Blinky
+      targetY = creatures[1].getY() - distY;
+    } else if (pacmanY > creatures[1].getY()) {
+      // Pacman is under (DOWN) Blinky
+      targetY = creatures[1].getY() + distY;
+    }
   }
 }

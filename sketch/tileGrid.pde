@@ -40,7 +40,7 @@ class TileGrid {
     for (int y = 0; y < MAX_ROWS; y++) {
       for (int x = 0; x < MAX_COLS; x++) {
         if (tileGrid.isWall(x, y)) {
-          //drawWallCell(x, y); Walls don't change
+          drawWallCell(x, y); // Walls don't change (unless target coordinates to be showed)
         } else if (tileGrid.isCorridor(x, y)) {
           drawCorridorCell(x, y); // Cleans all corridors. Is not the best but ...
           // there is a bug if I use a previous coordinates, and Pacman moves in diagonal.
