@@ -1,8 +1,11 @@
 
 
-final int INTERSPACE = 20;
-final int WALL_SIZE = 20;
-final int CORRIDOR_SIZE = 20;
+final int INTERSPACE = 24;
+final int WALL_SIZE = 24;
+final int CORRIDOR_SIZE = 24;
+final int PACMAN_SIZE = 24;
+final int GHOST_SIZE = 24;
+
 final int PELLET_SIZE = 5;
 final int POWER_PELLET_SIZE = 13;
 

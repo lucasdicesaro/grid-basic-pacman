@@ -1,4 +1,3 @@
-final int GHOST_SIZE = 20;
 
 class Ghost extends Creature {
 
@@ -14,14 +13,18 @@ class Ghost extends Creature {
   
   void drawYourSelf() {
     super.drawYourSelf();
+    noStroke();
     fill(c);
     square(x * INTERSPACE, y * INTERSPACE, GHOST_SIZE);
-    //drawTarget();
+    drawTarget();
   }
 
   void drawTarget() {
-    fill(c, 127);
+    //fill(c, 110);
+    stroke(c);
+    noFill();
     square(targetX * INTERSPACE, targetY * INTERSPACE, GHOST_SIZE);
+    stroke(0);
   }
   
   void processMovement(TileGrid tileGrid) {
@@ -86,6 +89,8 @@ class Ghost extends Creature {
   }
 
   void goOutFromHouse() {
+    previousX = x;
+    previousY = y;
     x = 14;
     y = 14;
     selectedMovement = LEFT;
