@@ -57,7 +57,13 @@ class Creature extends Drawable {
   }
   
   void cleanPreviousPosition() {
-    drawCorridorCell(previousX, previousY);
+    if (tileGrid.isPellet(previousX, previousY)) {
+      drawPelletCell(previousX, previousY);
+    } else if (tileGrid.isPowerPellet(previousX, previousY)) {
+      drawPowerPelletCell(previousX, previousY);
+    } else {
+      drawCorridorCell(previousX, previousY);
+    }
   }
   
   void debug() {

@@ -24,6 +24,11 @@ class Pacman extends Creature {
     } else if (selectedMovement == DOWN && tileGrid.isNotWallOnCreatureDown(this)) {
       moveDown();
     }
+
+    if (tileGrid.isPellet(x, y) || tileGrid.isPowerPellet(x, y)) {
+      pelletCounter++;
+      tileGrid.setTileValue(x, y, CORRIDOR); // Remove pellet from maze
+    }
   }
 
   void setSelectedMovement(int movement) {

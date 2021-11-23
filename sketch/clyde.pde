@@ -17,4 +17,8 @@ class Clyde extends Ghost {
       targetY = 35;
     }
   }
-} 
+
+  boolean hasToGoOutFromHouse() {
+    return pelletCounter > 60;
+  }
+}

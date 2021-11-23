@@ -1,5 +1,7 @@
 final int WALL = 0;
-final int CORRIDOR = 1;
+final int PELLET = 1;
+final int POWER_PELLET = 7;
+final int CORRIDOR = 8;
 
 class TileGrid {
   int[][] grid;
@@ -30,6 +32,10 @@ class TileGrid {
           inky = new Inky(x, y);
         } else if (tileGrid.isClyde(x, y)) {
           clyde = new Clyde(x, y);
+        } else if (tileGrid.isPellet(x, y)) {
+          drawPelletCell(x, y);
+        } else if (tileGrid.isPowerPellet(x, y)) {
+          drawPowerPelletCell(x, y);
         }
       }
     }
@@ -44,6 +50,10 @@ class TileGrid {
         } else if (tileGrid.isCorridor(x, y)) {
           drawCorridorCell(x, y); // Cleans all corridors. Is not the best but ...
           // there is a bug if I use a previous coordinates, and Pacman moves in diagonal.
+        } else if (tileGrid.isPellet(x, y)) {
+          drawPelletCell(x, y);
+        } else if (tileGrid.isPowerPellet(x, y)) {
+          drawPowerPelletCell(x, y);
         }
       }
     }
@@ -83,6 +93,14 @@ class TileGrid {
   
   boolean isClyde(int x, int y) {
     return getTileValue(x, y) == CLYDE_TYPE;
+  }
+
+  boolean isPellet(int x, int y) {
+    return getTileValue(x, y) == PELLET;
+  }
+
+  boolean isPowerPellet(int x, int y) {
+    return getTileValue(x, y) == POWER_PELLET;
   }
   
   boolean isNotWallOnCreatureLeft(Creature creature) {

@@ -4,10 +4,12 @@ class Ghost extends Creature {
 
   int targetX;
   int targetY;
+  boolean insideHouse;
   Ghost (int x, int y, int type, String name, color c) {  
     super(x, y, type, name, c);
     targetX = 0;
     targetY = 0;
+    insideHouse = true;
   }
   
   void drawYourSelf() {
@@ -24,6 +26,11 @@ class Ghost extends Creature {
   
   void processMovement(TileGrid tileGrid) {
     
+    if (insideHouse && hasToGoOutFromHouse()) {
+      goOutFromHouse();
+      insideHouse = false;
+    }
+
     setTarget();
 
     selectedMovement = getCalculatedMovement(selectedMovement);
@@ -70,9 +77,17 @@ class Ghost extends Creature {
 
     return newMovement;
   }
-  
+
   void setTarget() {
-    targetX = int(random(0, MAX_COLS));
-    targetY = int(random(0, MAX_ROWS));
+  }
+
+  boolean hasToGoOutFromHouse() {
+    return false;
+  }
+
+  void goOutFromHouse() {
+    x = 14;
+    y = 14;
+    selectedMovement = LEFT;
   }
 } 

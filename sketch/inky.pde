@@ -43,4 +43,8 @@ class Inky extends Ghost {
       targetY = creatures[1].getY() + distY;
     }
   }
+
+  boolean hasToGoOutFromHouse() {
+    return pelletCounter > 30;
+  }
 }

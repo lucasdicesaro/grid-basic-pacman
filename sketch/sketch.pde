@@ -3,6 +3,8 @@
 final int INTERSPACE = 20;
 final int WALL_SIZE = 20;
 final int CORRIDOR_SIZE = 20;
+final int PELLET_SIZE = 5;
+final int POWER_PELLET_SIZE = 10;
 
 final int PIXEL_SIZE = 3;
 
@@ -25,11 +27,14 @@ Pinky pinky;
 Inky inky;
 Clyde clyde;
 
+int pelletCounter;
+
 void setup() {
   //size(224 * PIXEL_SIZE, 288 * PIXEL_SIZE);
   size(672, 864);
 
   delayCounter = 0;
+  pelletCounter = 0;
 
   mapFile = new MapFile();
   
@@ -81,4 +86,16 @@ void drawWallCell(int x, int y) {
 void drawCorridorCell(int x, int y) {
   fill(0);
   square(x * INTERSPACE, y * INTERSPACE, CORRIDOR_SIZE);
+}
+
+void drawPelletCell(int x, int y) {
+  drawCorridorCell(x, y);
+  fill(255);
+  circle((x * INTERSPACE) + (CORRIDOR_SIZE / 2), (y * INTERSPACE) + (CORRIDOR_SIZE / 2), PELLET_SIZE);
+}
+
+void drawPowerPelletCell(int x, int y) {
+  drawCorridorCell(x, y);
+  fill(255);
+  circle((x * INTERSPACE) + (CORRIDOR_SIZE / 2), (y * INTERSPACE) + (CORRIDOR_SIZE / 2), POWER_PELLET_SIZE);
 }

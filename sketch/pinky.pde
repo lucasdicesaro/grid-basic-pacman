@@ -24,4 +24,8 @@ class Pinky extends Ghost {
         break;
     }
   }
+
+  boolean hasToGoOutFromHouse() {
+    return true;
+  }
 } 
