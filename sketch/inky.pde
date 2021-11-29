@@ -1,11 +1,17 @@
 final int INKY_TYPE = 5;
+final int INKY_SCATTER_X = 27;
+final int INKY_SCATTER_Y = 34;
 
 class Inky extends Ghost {
   Inky (int x, int y) {  
     super(x, y, INKY_TYPE, "Inky", color(0, 255, 255)); 
   }
 
-  void setTarget() {
+  boolean hasToGoOutFromHouse() {
+    return pelletCounter > 30;
+  }
+
+  void calculateChaseTarget() {
     int pacmanX = creatures[0].getX();
     int pacmanY = creatures[0].getY();
     switch(creatures[0].getSelectedMovement()){
@@ -44,7 +50,11 @@ class Inky extends Ghost {
     }
   }
 
-  boolean hasToGoOutFromHouse() {
-    return pelletCounter > 30;
+  void calculateScatterTarget() {
+    targetX = INKY_SCATTER_X;
+    targetY = INKY_SCATTER_Y;
+  }
+
+  void calculateFrightenedTarget() {
   }
 }

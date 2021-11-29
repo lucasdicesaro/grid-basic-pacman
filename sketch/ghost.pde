@@ -4,23 +4,25 @@ class Ghost extends Creature {
   int targetX;
   int targetY;
   boolean insideHouse;
+  boolean scheduleReverseDirection;
+  color frightenedColor = color(33, 33, 222);
   Ghost (int x, int y, int type, String name, color c) {  
     super(x, y, type, name, c);
     targetX = 0;
     targetY = 0;
     insideHouse = true;
+    scheduleReverseDirection = false;
   }
   
   void drawYourSelf() {
     super.drawYourSelf();
     noStroke();
-    fill(c);
+    fill(currentMode != FRIGHTENED ? c : frightenedColor);
     square(x * INTERSPACE, y * INTERSPACE, GHOST_SIZE);
     drawTarget();
   }
 
   void drawTarget() {
-    //fill(c, 110);
     stroke(c);
     noFill();
     square(targetX * INTERSPACE, targetY * INTERSPACE, GHOST_SIZE);
@@ -34,10 +36,12 @@ class Ghost extends Creature {
       insideHouse = false;
     }
 
+    checkIfShouldReverseDirection();
+
     setTarget();
 
     selectedMovement = getCalculatedMovement(selectedMovement);
-    
+
     if (selectedMovement == LEFT && tileGrid.isNotWallOnCreatureLeft(this)) {
       moveLeft();
     } else if (selectedMovement == RIGHT && tileGrid.isNotWallOnCreatureRight(this)) {
@@ -46,7 +50,7 @@ class Ghost extends Creature {
       moveUp();
     } else if (selectedMovement == DOWN && tileGrid.isNotWallOnCreatureDown(this)) {
       moveDown();
-    } 
+    }
   }
 
   int getCalculatedMovement(int selectedMovement) {
@@ -81,7 +85,47 @@ class Ghost extends Creature {
     return newMovement;
   }
 
+  void checkIfShouldReverseDirection() {
+    if (scheduleReverseDirection) {
+      reverseDirection();
+      scheduleReverseDirection = false;
+    }
+  }
+
+  void reverseDirection() {
+    switch(selectedMovement) {
+      case UP:
+        selectedMovement = DOWN;
+        break;
+      case DOWN:
+        selectedMovement = UP;
+        break;
+      case LEFT:
+        selectedMovement = RIGHT;
+        break;
+      case RIGHT:
+        selectedMovement = LEFT;
+        break;
+    }
+  }
+
   void setTarget() {
+    if (currentMode == CHASE) {
+      calculateChaseTarget();
+    } else if (currentMode == SCATTER) {
+      calculateScatterTarget();
+    } else if (currentMode == FRIGHTENED) {
+      calculateFrightenedTarget();
+    }
+  }
+
+  void calculateChaseTarget() {
+  }
+
+  void calculateScatterTarget() {
+  }
+
+  void calculateFrightenedTarget() {
   }
 
   boolean hasToGoOutFromHouse() {
@@ -94,5 +138,9 @@ class Ghost extends Creature {
     x = 14;
     y = 14;
     selectedMovement = LEFT;
+  }
+
+  void scheduleReverseDirection() {
+    scheduleReverseDirection = true;
   }
 } 
