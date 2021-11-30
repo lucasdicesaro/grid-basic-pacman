@@ -106,33 +106,16 @@ void drawCorridorCell(int x, int y) {
   square(x * INTERSPACE, y * INTERSPACE, CORRIDOR_SIZE);
 }
 
-void drawCorridorCell(Creature creature) {
-  fill(0);
-  square(creature.getX() * INTERSPACE, creature.getY() * INTERSPACE, CORRIDOR_SIZE);
-}
-
 void drawPelletCell(int x, int y) {
   drawCorridorCell(x, y);
   fill(255);
   circle((x * INTERSPACE) + (CORRIDOR_SIZE / 2), (y * INTERSPACE) + (CORRIDOR_SIZE / 2), PELLET_SIZE);
 }
 
-void drawPelletCell(Creature creature) {
-  drawCorridorCell(creature.getX(), creature.getY());
-  fill(255);
-  circle((creature.getX() * INTERSPACE) + (CORRIDOR_SIZE / 2), (creature.getY() * INTERSPACE) + (CORRIDOR_SIZE / 2), PELLET_SIZE);
-}
-
 void drawPowerPelletCell(int x, int y) {
   drawCorridorCell(x, y);
   fill(255);
   circle((x * INTERSPACE) + (CORRIDOR_SIZE / 2), (y * INTERSPACE) + (CORRIDOR_SIZE / 2), POWER_PELLET_SIZE);
-}
-
-void drawPowerPelletCell(Creature creature) {
-  drawCorridorCell(creature.getX(), creature.getY());
-  fill(255);
-  circle((creature.getX() * INTERSPACE) + (CORRIDOR_SIZE / 2), (creature.getY() * INTERSPACE) + (CORRIDOR_SIZE / 2), POWER_PELLET_SIZE);
 }
 
 void drawPalletCounter() {
