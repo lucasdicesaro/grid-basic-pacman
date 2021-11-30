@@ -25,10 +25,7 @@ class Clyde extends Ghost {
     targetY = CLYDE_SCATTER_Y;
   }
 
-  void calculateFrightenedTarget() {
-  }
-
   boolean hasToGoOutFromHouse() {
-    return pelletCounter > 60;
+    return globalGame.getPelletCounter() > 60;
   }
 }

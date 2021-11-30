@@ -13,7 +13,7 @@ class Pacman extends Creature {
     circle((x * INTERSPACE) + (PACMAN_SIZE / 2), (y * INTERSPACE) + (PACMAN_SIZE / 2), PACMAN_SIZE);
   }
   
-  void processMovement(TileGrid tileGrid) {
+  void processMovement() {
     if (selectedMovement == LEFT && tileGrid.isNotWallOnCreatureLeft(this)) {
       moveLeft();
     } else if (selectedMovement == RIGHT && tileGrid.isNotWallOnCreatureRight(this)) {
@@ -24,8 +24,11 @@ class Pacman extends Creature {
       moveDown();
     }
 
-    if (tileGrid.isPellet(x, y) || tileGrid.isPowerPellet(x, y)) {
-      pelletCounter++;
+    if (tileGrid.isPellet(this) || tileGrid.isPowerPellet(this)) {
+      globalGame.addPelletCounter();
+      if (tileGrid.isPowerPellet(this)) {
+        globalGame.changeModeTo(FRIGHTENED);
+      }
       tileGrid.setTileValue(x, y, CORRIDOR); // Remove pellet from maze
     }
   }

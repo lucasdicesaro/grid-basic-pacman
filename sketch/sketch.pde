@@ -11,21 +11,10 @@ final int POWER_PELLET_SIZE = 13;
 
 final int PIXEL_SIZE = 3;
 
-
-int MAX_COLS = 28;
-int MAX_ROWS = 36;
-
 int CREATURES_SIZE = 5;
 int GHOSTS_SIZE = 4;
 
 int DELAY = 5;
-
-final int CHASE = 0;
-final int SCATTER = 1;
-final int FRIGHTENED = 2;
-
-int currentMode = CHASE;
-int previousMode = CHASE;
 
 MapFile mapFile;
 TileGrid tileGrid;
@@ -38,9 +27,10 @@ Inky inky;
 Clyde clyde;
 
 int delayCounter;
-int pelletCounter;
 
 PFont f;
+GlobalGame globalGame;
+
 
 void setup() {
   //size(224 * PIXEL_SIZE, 288 * PIXEL_SIZE);
@@ -48,11 +38,10 @@ void setup() {
   f = createFont("Arial",16,true); // STEP 2 Create Font
 
   delayCounter = 0;
-  pelletCounter = 0;
 
   mapFile = new MapFile();
+  globalGame = new GlobalGame();
   
-  mapFile.debug();
   tileGrid = mapFile.fillGrid();
   tileGrid.renderGrid();
   
@@ -74,7 +63,7 @@ void draw() {
 
   if (delayCounter == 0) {
     for (int i = 0; i < CREATURES_SIZE; i++) {
-      creatures[i].processMovement(tileGrid);
+      creatures[i].processMovement();
     }
   }
   delayCounter++;
@@ -91,16 +80,17 @@ void keyPressed() {
   if (key == CODED) {
      pacman.setSelectedMovement(keyCode);
   } else if (key == 'd') {
+    mapFile.debug();
     tileGrid.debug();
     for (int i = 0; i < CREATURES_SIZE; i++) {
       creatures[i].debug();
     }
   } else if (key == 'c') {
-    changeModeTo(CHASE);
+    globalGame.changeModeTo(CHASE);
   } else if (key == 's') {
-    changeModeTo(SCATTER);
+    globalGame.changeModeTo(SCATTER);
   } else if (key == 'f') {
-    changeModeTo(FRIGHTENED);
+    globalGame.changeModeTo(FRIGHTENED);
   }
 }
 
@@ -131,19 +121,5 @@ void drawPowerPelletCell(int x, int y) {
 void drawPalletCounter() {
   textFont(f,16);
   fill(255);
-  text(nf(pelletCounter, 3),100,20);
-}
-
-void changeModeTo(int newMode) {
-  previousMode = currentMode;
-  currentMode = newMode;
-  reverseDirectionForAllGhosts();
-}
-
-void reverseDirectionForAllGhosts() {
-  if (previousMode != FRIGHTENED) {
-    for (int i = 0; i < GHOSTS_SIZE; i++) {
-      ghosts[i].scheduleReverseDirection();
-    }
-  }
+  text(nf(globalGame.getPelletCounter(), 3),100,20);
 }

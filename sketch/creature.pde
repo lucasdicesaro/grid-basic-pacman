@@ -48,7 +48,7 @@ class Creature extends Drawable {
     return selectedMovement;
   }
   
-  void processMovement(TileGrid tileGrid) {
+  void processMovement() {
   }
 
   void drawYourSelf() {

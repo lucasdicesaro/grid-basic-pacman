@@ -17,7 +17,7 @@ class Ghost extends Creature {
   void drawYourSelf() {
     super.drawYourSelf();
     noStroke();
-    fill(currentMode != FRIGHTENED ? c : frightenedColor);
+    fill(!globalGame.isFrightened() ? c : frightenedColor);
     square(x * INTERSPACE, y * INTERSPACE, GHOST_SIZE);
     drawTarget();
   }
@@ -29,7 +29,7 @@ class Ghost extends Creature {
     stroke(0);
   }
   
-  void processMovement(TileGrid tileGrid) {
+  void processMovement() {
     
     if (insideHouse && hasToGoOutFromHouse()) {
       goOutFromHouse();
@@ -38,25 +38,25 @@ class Ghost extends Creature {
 
     checkIfShouldReverseDirection();
 
-    setTarget();
-
     selectedMovement = getCalculatedMovement(selectedMovement);
 
-    if (selectedMovement == LEFT && tileGrid.isNotWallOnCreatureLeft(this)) {
+    if (selectedMovement == LEFT) {
       moveLeft();
-    } else if (selectedMovement == RIGHT && tileGrid.isNotWallOnCreatureRight(this)) {
+    } else if (selectedMovement == RIGHT) {
       moveRight();
-    } else if (selectedMovement == UP && tileGrid.isNotWallOnCreatureUp(this)) {
+    } else if (selectedMovement == UP) {
       moveUp();
-    } else if (selectedMovement == DOWN && tileGrid.isNotWallOnCreatureDown(this)) {
+    } else if (selectedMovement == DOWN) {
       moveDown();
     }
   }
 
   int getCalculatedMovement(int selectedMovement) {
 
-    int min = 99999;
+    setTarget();
+
     int newMovement = -1;
+    int min = 99999;
     if (selectedMovement != DOWN && tileGrid.isNotWallOnCreatureUp(this)) {
       if (min > dist(x, y-1, targetX, targetY)) {
         min = (int) dist(x, y-1, targetX, targetY);
@@ -110,11 +110,11 @@ class Ghost extends Creature {
   }
 
   void setTarget() {
-    if (currentMode == CHASE) {
+    if (globalGame.isChase()) {
       calculateChaseTarget();
-    } else if (currentMode == SCATTER) {
+    } else if (globalGame.isScatter()) {
       calculateScatterTarget();
-    } else if (currentMode == FRIGHTENED) {
+    } else if (globalGame.isFrightened()) {
       calculateFrightenedTarget();
     }
   }
@@ -126,6 +126,10 @@ class Ghost extends Creature {
   }
 
   void calculateFrightenedTarget() {
+    if (delayCounter == 0) {
+      targetX = int(random(MAX_COLS));
+      targetY = int(random(MAX_ROWS));
+    }
   }
 
   boolean hasToGoOutFromHouse() {

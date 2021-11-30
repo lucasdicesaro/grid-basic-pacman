@@ -17,7 +17,4 @@ class Blinky extends Ghost {
     targetX = BLINKY_SCATTER_X;
     targetY = BLINKY_SCATTER_Y;
   }
-
-  void calculateFrightenedTarget() {
-  }
-} 
+}

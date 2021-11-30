@@ -32,9 +32,6 @@ class Pinky extends Ghost {
     targetY = PINKY_SCATTER_Y;
   }
 
-  void calculateFrightenedTarget() {
-  }
-
   boolean hasToGoOutFromHouse() {
     return true;
   }

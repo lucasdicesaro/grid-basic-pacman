@@ -7,10 +7,6 @@ class Inky extends Ghost {
     super(x, y, INKY_TYPE, "Inky", color(0, 255, 255)); 
   }
 
-  boolean hasToGoOutFromHouse() {
-    return pelletCounter > 30;
-  }
-
   void calculateChaseTarget() {
     int pacmanX = creatures[0].getX();
     int pacmanY = creatures[0].getY();
@@ -55,6 +51,7 @@ class Inky extends Ghost {
     targetY = INKY_SCATTER_Y;
   }
 
-  void calculateFrightenedTarget() {
+  boolean hasToGoOutFromHouse() {
+    return globalGame.getPelletCounter() > 30;
   }
 }
